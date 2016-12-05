@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+
+final int versionMajor = 1
+final int versionMinor = 0
+final int versionPatch = 0
+final int androidVersionCode = 5
+
+final int targetSdk = rootProject.targetSdkVersion;
+final int minSdkRed = rootProject.minSdkVersion;
+final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+/*
+repositories {
+    maven {
+        //url "https://repo.commonsware.com.s3.amazonaws.com"
+    }
+}
+*/
+dependencies {
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okio:okio:1.7.0'
+    compile 'com.android.support:appcompat-v7:22.1.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':library')
+    compile files('libs/butterknife-7.0.1.jar')
+}
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'haohan'
+            keyPassword '111111'
+            storeFile file('/Users/admin/Desktop/BLE/keystore.jks')
+            storePassword '111111'
+        }
+    }
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    defaultConfig {
+        minSdkVersion minSdkRed
+        targetSdkVersion targetSdk
+        versionCode androidVersionCode
+        versionName semanticVersion
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            signingConfig signingConfigs.config
+        }
+    }
+    productFlavors {
+    }
+}

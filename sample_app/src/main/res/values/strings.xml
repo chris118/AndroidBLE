@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="action_settings">Settings</string>
+    <string name="app_name">濠汉信息</string>
+    <string name="connected">连接成功</string>
+    <string name="disconnected">断开连接</string>
+    <string name="invalid_device_data">错误的设备数据</string>
+    <string name="no_data">没有数据</string>
+    <string name="not_supported">不支持</string>
+    <string name="off">关闭</string>
+    <string name="on">打开</string>
+    <string name="supported">支持</string>
+    <string name="unknown">未知</string>
+    <string name="unknown_characteristic">未知的特点</string>
+    <string name="unknown_device">未知设备名称</string>
+    <string name="unknown_service">未知服务</string>
+    <string name="no_known_services">没有任何已知的服务</string>
+
+    <!-- Formatters -->
+    <string name="formatter_meters">%sm</string>
+    <string name="formatter_db">%sdb</string>
+    <string name="formatter_item_count">总数: %s</string>
+
+    <!-- Menu items -->
+    <string name="menu_about">关于</string>
+    <string name="menu_connect">连接</string>
+    <string name="menu_disconnect">断开</string>
+    <string name="menu_scan">扫描</string>
+    <string name="menu_stop">停止</string>
+    <string name="menu_share">分享</string>
+    <string name="myname">000</string>
+
+
+
+    <!-- Export Email Strings -->
+    <string name="exporter_email_device_list_subject">Bluetooth LE Scan Results (%s)</string>
+    <string name="exporter_email_device_services_subject" formatted="false">Bluetooth LE Device GATT Results (%s, %s)</string>
+    <string name="exporter_email_device_list_body">Please find attached the scan results.</string>
+    <string name="exporter_email_device_list_picker_text">Please select your email client:</string>
+
+    <!-- Labels -->
+    <string name="about_dialog_text">\t\n 濠汉信息  </string>
+    <string name="header_device_info">设备信息</string>
+    <string name="header_ibeacon_data">iBeacon 数据</string>
+    <!--string name="header_raw_ad_records">原始数据</string-->
+    <string name="header_rssi_info">场强信息</string>
+    <string name="header_scan_record">接收数据</string>
+    <string name="label_advertisement">Advertisement:</string>
+    <string name="label_as_array">As Array:</string>
+    <string name="label_as_string">As String:</string>
+    <string name="label_bluetooth_le_status">支持低功耗蓝牙(BLE):</string>
+    <string name="label_bluetooth_status">手机蓝牙状态:</string>
+    <string name="label_bonding_state">在线状态:</string>
+    <string name="label_company_id">Company ID:</string>
+    <string name="label_data">Data:</string>
+    <string name="label_desc">Desc:</string>
+    <string name="label_device_address">设备地址:</string>
+    <string name="label_device_class">设备类型:</string>
+    <string name="label_device_major_class">主类型:</string>
+    <string name="label_device_services">服务:</string>
+    <string name="label_device_name">设备名称:</string>
+    <string name="label_distance">Distance:</string>
+    <string name="label_first_rssi">第一次场强值:</string>
+    <string name="label_first_timestamp">第一次连接时间:</string>
+    <string name="label_last_rssi">最近场强值:</string>
+    <string name="label_last_timestamp">最近场强值时间:</string>
+    <string name="label_mac">MAC:</string>
+    <string name="label_major">Major:</string>
+    <string name="label_minor">Minor:</string>
+    <string name="label_rssi">信号强度:</string>
+    <string name="label_running_average_rssi">运行的平均场强值</string>
+    <string name="label_state">State:</string>
+    <string name="label_tx_power">TX Power:</string>
+    <string name="label_uuid">UUID:</string>
+    <string name="label_updated">最后接收时间:</string>
+    <string name="label_decriptor">Descriptor:</string>
+</resources>
