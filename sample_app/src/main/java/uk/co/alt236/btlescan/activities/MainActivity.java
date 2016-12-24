@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         RequestBody body = RequestBody.create(JSON, jsonData);
         Request request = new Request.Builder()
-                .url("http://49.91.255.177:8001/edit/services/rest/edit/WatchData")
+                .url("http://49.91.240.147:8001/edit/services/rest/edit/WatchData")
                 .post(body)
                 .build();
 
@@ -288,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
 
             final BluetoothLeDevice deviceLe = new BluetoothLeDevice(device, rssi, scanRecord, System.currentTimeMillis());
+            mDeviceStore.addDevice(deviceLe);
 
             // feed the device list
             String myname = deviceLe.getAddress();
@@ -299,30 +300,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             int num3 = Integer.parseInt(n3, 16);
             int num = 0;
             num = num1 << 16 | num2 << 8 | num3;
-
-            String strNum = String.valueOf(num);
-            String strMac = myname.substring(0, 8);
-
-            if( strMac.equals("FF:FF:FF")){
-                deviceList.add(String.valueOf(num));
-
-                mDeviceStore.addDevice(deviceLe);
-                final EasyObjectCursor<BluetoothLeDevice> c = mDeviceStore.getDeviceCursor();
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mLeDeviceListAdapter.swapCursor(c);
-                        updateItemCount(mLeDeviceListAdapter.getCount());
-                    }
-                });
-            }
-
-            if(strNum.substring(0, 1).equals("4")){
+            deviceList.add(String.valueOf(num));
 
 
+            final EasyObjectCursor<BluetoothLeDevice> c = mDeviceStore.getDeviceCursor();
 
-            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLeDeviceListAdapter.swapCursor(c);
+                    updateItemCount(mLeDeviceListAdapter.getCount());
+                }
+            });
         }
     };
 

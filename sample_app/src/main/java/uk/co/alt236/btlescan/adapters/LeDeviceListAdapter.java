@@ -83,6 +83,7 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
             viewHolder.deviceIcon = (ImageView) view.findViewById(R.id.device_icon);
             viewHolder.myName = (TextView) view.findViewById(R.id.myname);
 
+
             //viewHolder.deviceLastUpdated = (TextView) view.findViewById(R.id.device_last_update);
             /*viewHolder.ibeaconMajor = (TextView) view.findViewById(R.id.ibeacon_major);
             viewHolder.ibeaconMinor = (TextView) view.findViewById(R.id.ibeacon_minor);
@@ -156,9 +157,9 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
        // TextView ibeaconMajor;
         //TextView ibeaconMinor;
         //TextView ibeaconTxPower;
-        //TextView ibeaconDistance;
-       // TextView ibeaconDistanceDescriptor;
-       // TextView deviceLastUpdated;
+//        TextView ibeaconDistance;
+//        TextView ibeaconDistanceDescriptor;
+        TextView deviceLastUpdated;
         //View ibeaconSection;
         ImageView deviceIcon;
         TextView myName;
