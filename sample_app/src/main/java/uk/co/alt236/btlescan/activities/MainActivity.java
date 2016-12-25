@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -176,31 +177,69 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
 
-    private void getAsynHttp() {
-        OkHttpClient mOkHttpClient=new OkHttpClient();
-        Request.Builder requestBuilder = new Request.Builder().url("http://www.baidu.com");
-        //可以省略，默认是GET请求
-        requestBuilder.method("GET",null);
-        Request request = requestBuilder.build();
-        Call mcall= mOkHttpClient.newCall(request);
-        mcall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
+//    private void getAsynHttp() {
+//        OkHttpClient mOkHttpClient=new OkHttpClient();
+//        Request.Builder requestBuilder = new Request.Builder().url("http://www.baidu.com");
+//        //可以省略，默认是GET请求
+//        requestBuilder.method("GET",null);
+//        Request request = requestBuilder.build();
+//        Call mcall= mOkHttpClient.newCall(request);
+//        mcall.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                if (null != response.cacheResponse()) {
+//                    String str = response.cacheResponse().toString();
+//                    Log.i("BLE.......", "cache---" + str);
+//                } else {
+//                    response.body().string();
+//                    String str = response.networkResponse().toString();
+//                    Log.i("BLE.......", "network---" + str);
+//                }
+//            }
+//        });
+//    }
 
-            }
+    private int duration = 1000*20;
+    private Timer timer;
+    private void startScan() {
+
+        //CrashReport.testJavaCrash();
+
+        final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
+        final boolean mIsBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
+        mDeviceStore.clear();
+        updateItemCount(0);
+
+        mLeDeviceListAdapter = new LeDeviceListAdapter(this, mDeviceStore.getDeviceCursor());
+        mList.setAdapter(mLeDeviceListAdapter);
+
+        mBluetoothUtils.askUserToEnableBluetoothIfNeeded();
+        if (mIsBluetoothOn && mIsBluetoothLePresent) {
+            mScanner.scanLeDevice(-1, true);
+            invalidateOptionsMenu();
+        }
+
+        timer=new Timer();
+        timer.schedule(new java.util.TimerTask() {
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (null != response.cacheResponse()) {
-                    String str = response.cacheResponse().toString();
-                    Log.i("BLE.......", "cache---" + str);
-                } else {
-                    response.body().string();
-                    String str = response.networkResponse().toString();
-                    Log.i("BLE.......", "network---" + str);
+            public void run() {
+                Log.i("BLE.......", "timer arrived");
+                if (deviceList.size() > 0){
+                    Log.i("BLE.......", "上报数据");
+                    try {
+                        postAsynHttp();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        });
+        }, duration, duration);
     }
 
     public class WatchData {
@@ -219,13 +258,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void postAsynHttp() throws IOException {
 
+        ArrayList<String> deviceList_Temp = new ArrayList<>();
+        for (String device: deviceList) {
+            deviceList_Temp.add(device);
+        }
+
         OkHttpClient client = new OkHttpClient();
         MediaType JSON
                 = MediaType.parse("application/json; charset=utf-8");
 
         Gson gson = new Gson();
         WatchData devices = new WatchData();
-        devices.setTags(deviceList);
+        devices.setTags(deviceList_Temp);
         //将对象转换为JSON数据
         String jsonData = gson.toJson(devices);
         jsonData = "{\"WatchData\":" + jsonData + "}";
@@ -413,7 +457,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onPause() {
         super.onPause();
-        mScanner.scanLeDevice(-1, false);
+        if(mScanner != null){
+            mScanner.scanLeDevice(-1, false);
+        }
     }
 
     @Override
@@ -436,42 +482,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         invalidateOptionsMenu();
     }
-
-    private int duration = 1000*10;
-    private Timer timer;
-    private void startScan() {
-        final boolean mIsBluetoothOn = mBluetoothUtils.isBluetoothOn();
-        final boolean mIsBluetoothLePresent = mBluetoothUtils.isBluetoothLeSupported();
-        mDeviceStore.clear();
-        updateItemCount(0);
-
-        mLeDeviceListAdapter = new LeDeviceListAdapter(this, mDeviceStore.getDeviceCursor());
-        mList.setAdapter(mLeDeviceListAdapter);
-
-        mBluetoothUtils.askUserToEnableBluetoothIfNeeded();
-        if (mIsBluetoothOn && mIsBluetoothLePresent) {
-            mScanner.scanLeDevice(-1, true);
-            invalidateOptionsMenu();
-        }
-
-        timer=new Timer();
-        timer.schedule(new java.util.TimerTask() {
-
-            @Override
-            public void run() {
-                Log.i("BLE.......", "timer arrived");
-                if (deviceList.size() > 0){
-                    Log.i("BLE.......", "上报数据");
-                    try {
-                        postAsynHttp();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, duration, duration);
-    }
-
     private void stopScan(){
         timer.cancel();
         mScanner.scanLeDevice(-1, false);

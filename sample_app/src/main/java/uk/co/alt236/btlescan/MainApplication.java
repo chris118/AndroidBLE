@@ -2,6 +2,8 @@ package uk.co.alt236.btlescan;
 
 import android.app.Application;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 /**
  * Created by xiaopeng on 16/6/16.
  */
@@ -13,6 +15,7 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        CrashReport.initCrashReport(getApplicationContext(), "f06086de84", true);
     }
 
 }
