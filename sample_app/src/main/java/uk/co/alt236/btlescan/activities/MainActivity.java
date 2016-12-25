@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 import butterknife.Bind;
@@ -257,19 +258,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void postAsynHttp() throws IOException {
-
-        ArrayList<String> deviceList_Temp = new ArrayList<>();
-        for (String device: deviceList) {
-            deviceList_Temp.add(device);
-        }
-
         OkHttpClient client = new OkHttpClient();
         MediaType JSON
                 = MediaType.parse("application/json; charset=utf-8");
 
         Gson gson = new Gson();
         WatchData devices = new WatchData();
-        devices.setTags(deviceList_Temp);
+        devices.setTags(deviceList);
         //将对象转换为JSON数据
         String jsonData = gson.toJson(devices);
         jsonData = "{\"WatchData\":" + jsonData + "}";
@@ -325,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //        });
     }
 
-    private ArrayList<String> deviceList = new ArrayList<>();
+    private List<String> deviceList = new CopyOnWriteArrayList<>();
 
     private final BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
