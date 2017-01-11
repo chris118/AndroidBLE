@@ -85,13 +85,13 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
 
 
             //viewHolder.deviceLastUpdated = (TextView) view.findViewById(R.id.device_last_update);
-            /*viewHolder.ibeaconMajor = (TextView) view.findViewById(R.id.ibeacon_major);
-            viewHolder.ibeaconMinor = (TextView) view.findViewById(R.id.ibeacon_minor);
+//            viewHolder.ibeaconMajor = (TextView) view.findViewById(R.id.ibeacon_major);
+//            viewHolder.ibeaconMinor = (TextView) view.findViewById(R.id.ibeacon_minor);
             viewHolder.ibeaconDistance = (TextView) view.findViewById(R.id.ibeacon_distance);
-            viewHolder.ibeaconUUID = (TextView) view.findViewById(R.id.ibeacon_uuid);
-            viewHolder.ibeaconTxPower = (TextView) view.findViewById(R.id.ibeacon_tx_power);
-            viewHolder.ibeaconSection = view.findViewById(R.id.ibeacon_section);
-            viewHolder.ibeaconDistanceDescriptor = (TextView) view.findViewById(R.id.ibeacon_distance_descriptor);*/
+//            viewHolder.ibeaconUUID = (TextView) view.findViewById(R.id.ibeacon_uuid);
+//            viewHolder.ibeaconTxPower = (TextView) view.findViewById(R.id.ibeacon_tx_power);
+//            viewHolder.ibeaconSection = view.findViewById(R.id.ibeacon_section);
+//            viewHolder.ibeaconDistanceDescriptor = (TextView) view.findViewById(R.id.ibeacon_distance_descriptor);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
@@ -112,13 +112,13 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
             final String accuracy = Constants.DOUBLE_TWO_DIGIT_ACCURACY.format(iBeacon.getAccuracy());
 
             viewHolder.deviceIcon.setImageResource(R.drawable.ic_device_ibeacon);
-            /*viewHolder.ibeaconSection.setVisibility(View.VISIBLE);
-            viewHolder.ibeaconMajor.setText(String.valueOf(iBeacon.getMajor()));
-            viewHolder.ibeaconMinor.setText(String.valueOf(iBeacon.getMinor()));
-            viewHolder.ibeaconTxPower.setText(String.valueOf(iBeacon.getCalibratedTxPower()));
-            viewHolder.ibeaconUUID.setText(iBeacon.getUUID());
+//            viewHolder.ibeaconSection.setVisibility(View.VISIBLE);
+//            viewHolder.ibeaconMajor.setText(String.valueOf(iBeacon.getMajor()));
+//            viewHolder.ibeaconMinor.setText(String.valueOf(iBeacon.getMinor()));
+//            viewHolder.ibeaconTxPower.setText(String.valueOf(iBeacon.getCalibratedTxPower()));
+//            viewHolder.ibeaconUUID.setText(iBeacon.getUUID());
             viewHolder.ibeaconDistance.setText(mActivity.getString(R.string.formatter_meters, accuracy));
-            viewHolder.ibeaconDistanceDescriptor.setText(iBeacon.getDistanceDescriptor().toString());*/
+//            viewHolder.ibeaconDistanceDescriptor.setText(iBeacon.getDistanceDescriptor().toString());
         } else {
             viewHolder.deviceIcon.setImageResource(R.drawable.ic_bluetooth);
             //viewHolder.ibeaconSection.setVisibility(View.GONE);
@@ -157,7 +157,7 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
        // TextView ibeaconMajor;
         //TextView ibeaconMinor;
         //TextView ibeaconTxPower;
-//        TextView ibeaconDistance;
+        TextView ibeaconDistance;
 //        TextView ibeaconDistanceDescriptor;
         TextView deviceLastUpdated;
         //View ibeaconSection;

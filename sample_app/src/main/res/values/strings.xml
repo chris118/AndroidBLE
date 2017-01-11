@@ -2,7 +2,7 @@
 <resources>
 
     <string name="action_settings">Settings</string>
-    <string name="app_name">濠汉信息</string>
+    <string name="app_name">HH</string>
     <string name="connected">连接成功</string>
     <string name="disconnected">断开连接</string>
     <string name="invalid_device_data">错误的设备数据</string>
@@ -40,7 +40,7 @@
     <string name="exporter_email_device_list_picker_text">Please select your email client:</string>
 
     <!-- Labels -->
-    <string name="about_dialog_text">\t\n 濠汉信息  </string>
+    <string name="about_dialog_text">\t\n HH </string>
     <string name="header_device_info">设备信息</string>
     <string name="header_ibeacon_data">iBeacon 数据</string>
     <!--string name="header_raw_ad_records">原始数据</string-->

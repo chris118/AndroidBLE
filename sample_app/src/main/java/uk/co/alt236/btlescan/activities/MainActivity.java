@@ -341,7 +341,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String strNum = String.valueOf(num);
             String strMac = myname.substring(0, 8);
 
-            if( strMac.equals("FF:FF:FF")){
+//            if( strMac.equals("FF:FF:FF"))
+            {
                 deviceList.add(String.valueOf(num));
 
                 mDeviceStore.addDevice(deviceLe);

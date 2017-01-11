@@ -33,7 +33,7 @@ android {
         config {
             keyAlias 'haohan'
             keyPassword '111111'
-            storeFile file('D:/Project/Haohan/AndroidBLE/keystore.jks')
+            storeFile file('/Users/admin/source/android/BLE/AndroidBLE/keystore.jks')
             storePassword '111111'
         }
     }
