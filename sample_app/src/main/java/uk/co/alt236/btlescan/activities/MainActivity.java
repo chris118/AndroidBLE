@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         RequestBody body = RequestBody.create(JSON, jsonData);
         Request request = new Request.Builder()
-                .url("http://49.91.240.147:8001/edit/services/rest/edit/WatchData")
+                .url("http://122.192.0.170:8001/edit/services/rest/edit/WatchData")
                 .post(body)
                 .build();
 
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String strMac = myname.substring(0, 8);
 
 //            if( strMac.equals("FF:FF:FF"))
-            if (BeaconUtils.getBeaconType(deviceLe) == BeaconType.IBEACON)
+//            if (BeaconUtils.getBeaconType(deviceLe) == BeaconType.IBEACON)
             {
                 deviceList.add(String.valueOf(num));
 

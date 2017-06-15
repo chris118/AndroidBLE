@@ -112,6 +112,12 @@ public class LeDeviceListAdapter extends SimpleCursorAdapter {
             final String accuracy = Constants.DOUBLE_TWO_DIGIT_ACCURACY.format(iBeacon.getAccuracy());
 
             viewHolder.deviceIcon.setImageResource(R.drawable.ic_device_ibeacon);
+
+            String major = String.valueOf(iBeacon.getMajor());
+            String minor = String.valueOf(iBeacon.getMinor());
+            String uuid = String.valueOf(iBeacon.getUUID());
+            Log.i("LeDeviceListAdapter", uuid);
+
 //            viewHolder.ibeaconSection.setVisibility(View.VISIBLE);
 //            viewHolder.ibeaconMajor.setText(String.valueOf(iBeacon.getMajor()));
 //            viewHolder.ibeaconMinor.setText(String.valueOf(iBeacon.getMinor()));
