@@ -43,6 +43,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
+import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.adapters.LeDeviceListAdapter;
 import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
@@ -332,8 +334,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String strNum = String.valueOf(num);
             String strMac = myname.substring(0, 2);
 
-            if( strMac.equals("FF")){
-                //            if (BeaconUtils.getBeaconType(deviceLe) == BeaconType.IBEACON)
+//            if( strMac.equals("FF")){
+                            if (BeaconUtils.getBeaconType(deviceLe) == BeaconType.IBEACON){
                 {
                     deviceList.add(String.valueOf(num));
 
