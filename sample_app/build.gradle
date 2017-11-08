@@ -17,13 +17,16 @@ repositories {
 }
 */
 dependencies {
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.squareup.okio:okio:1.7.0'
-    compile 'com.android.support:appcompat-v7:22.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':library')
     compile files('libs/butterknife-7.0.1.jar')
+
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:support-v4:25.0.0'
+
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okio:okio:1.7.0'
     compile 'com.tencent.bugly:crashreport:latest.release'
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
 }
@@ -37,7 +40,7 @@ android {
             storePassword '111111'
         }
     }
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion '25.0.0'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

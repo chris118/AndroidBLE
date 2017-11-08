@@ -1,12 +1,16 @@
 package uk.co.alt236.btlescan.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -20,43 +24,25 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.tencent.bugly.crashreport.CrashReport;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import uk.co.alt236.bluetoothlelib.device.BluetoothLeDevice;
-import uk.co.alt236.bluetoothlelib.device.beacon.BeaconType;
-import uk.co.alt236.bluetoothlelib.device.beacon.BeaconUtils;
 import uk.co.alt236.btlescan.R;
 import uk.co.alt236.btlescan.adapters.LeDeviceListAdapter;
 import uk.co.alt236.btlescan.containers.BluetoothLeDeviceStore;
@@ -80,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private BluetoothLeScanner mScanner;
     private LeDeviceListAdapter mLeDeviceListAdapter;
     private BluetoothLeDeviceStore mDeviceStore;
+    private static final int REQUEST_ENABLE_BT = 1;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 100;
+
 
 //    public String StreamToStr(InputStream is) {
 //        try {
@@ -234,12 +223,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void run() {
                 Log.i("BLE.......", "timer arrived");
                 if (deviceList.size() > 0){
-                    Log.i("BLE.......", "上报数据");
-                    try {
-                        postAsynHttp();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        Log.i("BLE.......", "上报数据");
+//                        postAsynHttp();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         }, duration, duration);
@@ -341,27 +330,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             int num = 0;
             num = num1 << 16 | num2 << 8 | num3;
             String strNum = String.valueOf(num);
-            String strMac = myname.substring(0, 8);
+            String strMac = myname.substring(0, 2);
 
-//            if( strMac.equals("FF:FF:FF"))
-//            if (BeaconUtils.getBeaconType(deviceLe) == BeaconType.IBEACON)
-            {
-                deviceList.add(String.valueOf(num));
+            if( strMac.equals("FF")){
+                //            if (BeaconUtils.getBeaconType(deviceLe) == BeaconType.IBEACON)
+                {
+                    deviceList.add(String.valueOf(num));
 
-                mDeviceStore.addDevice(deviceLe);
-                final EasyObjectCursor<BluetoothLeDevice> c = mDeviceStore.getDeviceCursor();
+                    mDeviceStore.addDevice(deviceLe);
+                    final EasyObjectCursor<BluetoothLeDevice> c = mDeviceStore.getDeviceCursor();
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mLeDeviceListAdapter.swapCursor(c);
-                        updateItemCount(mLeDeviceListAdapter.getCount());
-                    }
-                });
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mLeDeviceListAdapter.swapCursor(c);
+                            updateItemCount(mLeDeviceListAdapter.getCount());
+                        }
+                    });
+                }
             }
 
-            if(strNum.substring(0, 1).equals("4")){
-            }
 //            deviceList.add(String.valueOf(num));
 //
 //
@@ -403,6 +391,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 .show();
     }
 
+    private void askBle(){
+        // 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+//            finish();
+        }
+        if (mBluetoothUtils.getBluetoothAdapter() == null || !mBluetoothUtils.getBluetoothAdapter().isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+    }
+
+    /*
+  校验蓝牙权限
+ */
+    private void checkBluetoothPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            //校验是否已具有模糊定位权限
+            if (ContextCompat.checkSelfPermission(MainActivity.this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+            } else {
+                //具有权限
+//                startScan();
+            }
+        } else {
+            //系统不高于6.0直接执行
+//            startScan();
+        }
+    }
+
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -418,6 +440,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //应用运行时，保持屏幕高亮，不锁屏
 
         //startScan();
+        askBle();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_ENABLE_BT:
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(this, "蓝牙已启用", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "蓝牙未启用", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
     @Override
@@ -499,7 +535,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         invalidateOptionsMenu();
+
+        checkBluetoothPermission();
     }
+
     private void stopScan(){
         timer.cancel();
         mScanner.scanLeDevice(-1, false);
